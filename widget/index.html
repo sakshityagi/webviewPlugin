@@ -127,7 +127,7 @@
     var isBackClicked = false;
 
 
-    buildfire.navigation.onBackButtonClick = function () {
+   /* buildfire.navigation.onBackButtonClick = function () {
 
       var oldUrl = history.pop();
       var webviewIframe = document.getElementById("webviewIframe");
@@ -148,21 +148,46 @@
         buildfire.navigation.restoreBackButtonClick();
         buildfire.navigation.goBack();
       }
-    };
+    };*/
+
+    buildfire.history.onPop(function(data, err){
+      console.log('buildfire.history.onPop----------------------------',data,'Error------------------',err);
+      /*var path = $location.path();
+      if (path.indexOf('/media') == 0) {
+        if ($("#feedView").hasClass('notshowing')) {
+          Messaging.sendMessageToControl({
+            name: EVENTS.ROUTE_CHANGE,
+            message: {
+              path: PATHS.HOME
+            }
+          });
+          $("#showFeedBtn").click();
+        }
+        else
+          Location.goToHome();
+      }
+      else if (path.indexOf('/nowplaying') == 0)
+        Location.go('#/media/' + path.split('/')[2]);*/
+      /*else
+       buildfire.navigation._goBackOne();
+       buildfire.messaging.sendMessageToControl({});
+       $rootScope.showFeed = true;
+       Location.goTo('#/');*/
+    })
 
     $scope.iframeLoadedCallBack = function () {
       var webviewIframe = document.getElementById("webviewIframe");
       buildfire.spinner.hide();
       if (!isBackClicked) {
         var oldUrl = webviewIframe.contentWindow.location.href;
-        history.push(oldUrl);
+        buildfire.history.push('View',{url:oldUrl,elementToShow: 'Media'});
       } else
         isBackClicked = false;
 
       webviewIframe.contentWindow.addEventListener('hashchange', function () {
         if (!isBackClicked) {
           var oldUrl = webviewIframe.contentWindow.location.href;
-          history.push(oldUrl);
+          buildfire.history.push('View',{url:oldUrl,elementToShow: 'Media'});
         } else
           isBackClicked = false;
       });
